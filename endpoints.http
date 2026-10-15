@@ -1,0 +1,9 @@
+@baseUrl = http://localhost:3333
+
+### Test database
+
+GET {{baseUrl}}/health
+
+### Testar a aplicação
+
+GET {{baseUrl}}/

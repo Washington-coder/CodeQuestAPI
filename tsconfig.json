@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    // Ambiente Node.js
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["node"],
+
+    // Estrutura do projeto
+    "rootDir": "./src",
+    "outDir": "./build",
+
+    // Segurança de tipos
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noEmitOnError": true,
+
+    // Compatibilidade
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+
+    // Desenvolvimento e build
+    "sourceMap": true,
+    "incremental": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "build"]
+}
