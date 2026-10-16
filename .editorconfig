@@ -1,0 +1,9 @@
+# Indica que este é o arquivo de configuração raiz do projeto
+root = true
+
+# Aplica as regras para todos os arquivos (*)
+[*]
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+charset = utf-8
