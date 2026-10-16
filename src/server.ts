@@ -1,8 +1,8 @@
 import 'dotenv/config'
 import fastify from 'fastify'
-import { db } from './db/index.js'
+import { db } from './db/index'
 import { sql } from 'drizzle-orm'
-import { env } from './env/env.js'
+import { env } from './env/env'
 
 const app = fastify({ logger: true })
 
