@@ -1,19 +1,21 @@
 import 'dotenv/config'
 import fastify from 'fastify'
-import { pool } from './db.js'
+import { db } from './db/index.js'
+import { sql } from 'drizzle-orm'
+import { env } from './env/env.js'
 
 const app = fastify({ logger: true })
 
-app.decorate('db', pool)
+app.decorate('db', db)
 
 app.get('/health', async () => {
-  const { rows } = await pool.query('SELECT NOW() AS agora')
+  const [rows] = await db.execute(sql`SELECT NOW() AS agora`)
 
-  return { status: 'ok', banco: rows[0].agora }
+  return { status: 'ok', banco: rows.agora }
 })
 
 app.addHook('onClose', async () => {
-  await pool.end()
+  await db.$client.end()
 })
 
 app.get('/', async (_request, _reply) => {
@@ -25,7 +27,7 @@ app.get('/', async (_request, _reply) => {
 const start = async () => {
   try {
     const address = await app.listen({
-      port: Number(process.env.PORT) || 3333,
+      port: Number(env.PORT),
       host: '0.0.0.0',
     })
 
