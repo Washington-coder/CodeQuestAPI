@@ -1,7 +1,8 @@
 import { Pool } from 'pg'
+import { env } from './env/env.js'
 
 export const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: env.DATABASE_URL,
 })
 
 process.on('SIGINT', () => {
