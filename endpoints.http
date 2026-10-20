@@ -7,3 +7,10 @@ GET {{baseUrl}}/health
 ### Testar a aplicação
 
 GET {{baseUrl}}/
+
+### Register user with email and password
+
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{"name": "Washington", "email": "washington@example.com", "password": "senha#123"}

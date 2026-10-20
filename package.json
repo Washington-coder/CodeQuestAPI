@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "start:drizzle-studio": "npx drizzle-kit studio"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
   },
   "homepage": "https://github.com/Washington-coder/fastify-boilerplate#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "dotenv": "^18.0.8",
     "drizzle-orm": "^0.45.4",
     "fastify": "^5.12.7",
@@ -34,6 +36,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^26.6.5",
     "@types/pg": "^8.23.1",
     "@typescript-eslint/eslint-plugin": "^8.71.2",
@@ -47,7 +50,7 @@
     "prettier": "^3.9.10",
     "tsup": "^9.0.0",
     "tsx": "^4.23.15",
-    "typescript": "^7.0.2",
+    "typescript": "^5.9.3",
     "typescript-eslint": "^8.71.2"
   }
 }
