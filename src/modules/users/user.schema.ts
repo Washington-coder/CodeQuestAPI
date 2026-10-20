@@ -9,3 +9,5 @@ export const createUserSchema = z.object({
     .regex(/[0-9]/, 'Password must contain at least 1 number')
     .regex(/[^a-zA-Z0-9]/, 'Password must contain at least 1 special character'),
 })
+
+export type CreateUserBody = z.infer<typeof createUserSchema>
