@@ -4,7 +4,7 @@ import { sql } from 'drizzle-orm'
 import { ZodError } from 'zod'
 import { userRoutes } from './modules/users/user.routes'
 
-const app = fastify({ logger: true })
+const app = fastify({ logger: process.env.NODE_ENV !== 'test' })
 
 app.decorate('db', db)
 

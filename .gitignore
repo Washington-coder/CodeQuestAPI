@@ -3,3 +3,4 @@ build
 dist
 *.tsbuildinfo
 .env
+.env.test

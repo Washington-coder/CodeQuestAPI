@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { createUserService } from './user.service'
+import { createUserService } from './../user.service'
 
 describe('Register User', () => {
   it('Creates a hash from the password with 12 rounds and puts it on the repository', async () => {

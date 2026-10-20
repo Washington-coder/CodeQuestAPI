@@ -67,4 +67,11 @@ export default tseslint.config(
     files: ['*.config.js', '*.config.mjs'],
     extends: [tseslint.configs.disableTypeChecked],
   },
+
+  {
+    // Configs do Vitest ficam fora do tsconfig (include: src/**), então
+    // não podem ser type-checked pelo parser
+    files: ['vitest.config.ts', 'vitest.integration.config.ts', 'tsup.config.ts'],
+    extends: [tseslint.configs.disableTypeChecked],
+  },
 )
