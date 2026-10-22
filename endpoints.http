@@ -14,3 +14,11 @@ POST {{baseUrl}}/users
 Content-Type: application/json
 
 {"name": "Washington", "email": "washington@example.com", "password": "senha#123"}
+
+### Login user with email and password
+
+#@name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{"email": "washington@example.com", "password": "senha#123"}

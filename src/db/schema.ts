@@ -7,3 +7,7 @@ export const users = pgTable('users', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
   passwordHash: text('password_hash').notNull(),
 })
+
+// Tipos inferidos da tabela — nunca duplicar manualmente (DRY)
+export type User = typeof users.$inferSelect // linha retornada num SELECT
+export type NewUser = typeof users.$inferInsert // objeto aceito num INSERT

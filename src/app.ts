@@ -5,6 +5,7 @@ import { ZodError } from 'zod'
 import { userRoutes } from './modules/users/user.routes'
 import fastifyJwt from '@fastify/jwt'
 import { env } from './env/env'
+import { authRoutes } from './modules/auth/auth.routes'
 
 const app = fastify({ logger: process.env.NODE_ENV !== 'test' })
 
@@ -37,5 +38,6 @@ app.get('/', async (_request, _reply) => {
 app.register(fastifyJwt, { secret: env.JWT_SECRET })
 
 app.register(userRoutes, { prefix: '/users' })
+app.register(authRoutes, { prefix: '/auth' })
 
 export default app

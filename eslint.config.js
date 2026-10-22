@@ -5,7 +5,7 @@ import globals from 'globals'
 
 export default tseslint.config(
   {
-    ignores: ['build', 'dist', 'node_modules'],
+    ignores: ['build', 'dist', 'node_modules', 'coverage'],
   },
 
   js.configs.recommended,
@@ -69,9 +69,14 @@ export default tseslint.config(
   },
 
   {
-    // Configs do Vitest ficam fora do tsconfig (include: src/**), então
-    // não podem ser type-checked pelo parser
-    files: ['vitest.config.ts', 'vitest.integration.config.ts', 'tsup.config.ts'],
+    // Configs do Vitest e do Drizzle ficam fora do tsconfig (include: src/**),
+    // então não podem ser type-checked pelo parser
+    files: [
+      'vitest.config.ts',
+      'vitest.integration.config.ts',
+      'tsup.config.ts',
+      'drizzle.config.ts',
+    ],
     extends: [tseslint.configs.disableTypeChecked],
   },
 )

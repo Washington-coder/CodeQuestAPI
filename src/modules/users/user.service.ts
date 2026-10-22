@@ -1,10 +1,8 @@
+import { type NewUser } from '../../db/schema'
+
 export type UserDeps = {
   hash: (password: string, rounds: number) => Promise<string>
-  createUser: (data: {
-    name: string
-    email: string
-    passwordHash: string
-  }) => Promise<{ id: string; name: string; email: string }>
+  createUser: (data: NewUser) => Promise<{ id: string; name: string; email: string }>
 }
 
 export function createUserService(deps: UserDeps) {
