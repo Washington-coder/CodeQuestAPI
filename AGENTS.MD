@@ -2,8 +2,7 @@
 
 ## Projeto
 
-Boilerplate de API em **Node.js (>= 20) + Fastify 5 + TypeScript 5.9 (strict) + ESM** (`"type": "module"`).
-É um **template de ponto de partida**: será copiado e adaptado ao iniciar novos projetos. Mantenha o código genérico (sem regra de negócio embutida) e siga as escolhas já feitas (tsx, tsup, pino, ESLint type-checked, Prettier, zod, vitest, LF).
+CodeQuest is a web platform where programmers can acess to pratice their programming skills. So the main thing the users should do as soon as they log into the app is be able to answer some question about the tech stack they like. The result of the answers should be saved in some database ('I will define the database later and the cloud'). The app should have a good and youth energy in its design, make modern, simple and put some animations to make it smooth transaction in the components of the interface. The colors for fonts, backgrounds should have something to do with youth, energy and modernity. The font should remember programming and IT in some way. And finally make it easy to use, it should have a few functionalities at first like sidebar, navbar, go back button, users page, report.
 
 ## Comandos
 

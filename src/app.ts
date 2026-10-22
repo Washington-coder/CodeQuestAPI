@@ -3,6 +3,8 @@ import { db } from './db'
 import { sql } from 'drizzle-orm'
 import { ZodError } from 'zod'
 import { userRoutes } from './modules/users/user.routes'
+import fastifyJwt from '@fastify/jwt'
+import { env } from './env/env'
 
 const app = fastify({ logger: process.env.NODE_ENV !== 'test' })
 
@@ -31,6 +33,8 @@ app.get('/', async (_request, _reply) => {
     message: 'Template Fastify running...',
   }
 })
+
+app.register(fastifyJwt, { secret: env.JWT_SECRET })
 
 app.register(userRoutes, { prefix: '/users' })
 

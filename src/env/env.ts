@@ -8,6 +8,8 @@ const envSchema = z.object({
     .min(1, 'DATABASE_URL is missing!')
     .url('DATABASE_URL needs  to be valid!'),
   PORT: z.coerce.number().int().positive().default(3333),
+  JWT_SECRET: z.string().min(32),
+  JWT_EXPIRES_IN: z.string().default('15m'),
 })
 
 const parsed = envSchema.safeParse(process.env)
