@@ -10,6 +10,13 @@ const envSchema = z.object({
   PORT: z.coerce.number().int().positive().default(3333),
   JWT_SECRET: z.string().min(32),
   JWT_EXPIRES_IN: z.string().default('15m'),
+  GOOGLE_CLIENT_ID: z.string(),
+  GOOGLE_CLIENT_SECRET: z.string(),
+  GOOGLE_REDIRECT_URI: z.string().url({ message: 'Invalid GOOGLE_REDIRECT_URI' }),
+  FRONTEND_URL: z
+    .string()
+    .url({ message: 'Invalid FRONTEND_URL' })
+    .default('http://localhost:3000'),
 })
 
 const parsed = envSchema.safeParse(process.env)

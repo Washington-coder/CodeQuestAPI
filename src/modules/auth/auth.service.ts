@@ -18,7 +18,7 @@ export function createAuthService(deps: AuthDeps) {
   return async function login(input: LoginSchemaBody) {
     const user = await deps.findUserByEmail(input.email)
 
-    if (!user) {
+    if (!user || !user.passwordHash) {
       throw new InvalidCredentialsError()
     }
 

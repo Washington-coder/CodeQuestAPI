@@ -4,6 +4,7 @@ import { sql } from 'drizzle-orm'
 import { ZodError } from 'zod'
 import { userRoutes } from './modules/users/user.routes'
 import fastifyJwt from '@fastify/jwt'
+import fastifyCors from '@fastify/cors'
 import { env } from './env/env'
 import { authRoutes } from './modules/auth/auth.routes'
 
@@ -34,6 +35,8 @@ app.get('/', async (_request, _reply) => {
     message: 'Template Fastify running...',
   }
 })
+
+app.register(fastifyCors, { origin: env.FRONTEND_URL })
 
 app.register(fastifyJwt, { secret: env.JWT_SECRET })
 

@@ -8,6 +8,7 @@ const user: User = {
   email: 'ana@teste.com',
   createdAt: new Date('2026-01-01T00:00:00Z'),
   passwordHash: '$2y$12$hash',
+  googleId: null,
 }
 
 function makeDeps(overrides: Partial<Parameters<typeof createAuthService>[0]> = {}) {
