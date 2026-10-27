@@ -8,7 +8,7 @@ CodeQuest is a web platform where programmers can acess to pratice their program
 
 - [x] [RF-01] The app must allow users to register a new account using an email and password.
 
-- [ ] [RF-02] The app must allow users to log in with their email and password.
+- [x] [RF-02] The app must allow users to log in with their email and password.
 
 - [ ] [RF-03] The app must allow users to log in using their Google Accounts.
 
