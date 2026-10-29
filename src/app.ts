@@ -1,4 +1,4 @@
-import fastify from 'fastify'
+import fastify, { type FastifyReply, type FastifyRequest } from 'fastify'
 import { db } from './db'
 import { sql } from 'drizzle-orm'
 import { ZodError } from 'zod'
@@ -7,6 +7,7 @@ import fastifyJwt from '@fastify/jwt'
 import fastifyCors from '@fastify/cors'
 import { env } from './env/env'
 import { authRoutes } from './modules/auth/auth.routes'
+import { preferencesRoutes } from './modules/preferences/preferences.routes'
 
 const app = fastify({ logger: process.env.NODE_ENV !== 'test' })
 
@@ -40,7 +41,16 @@ app.register(fastifyCors, { origin: env.FRONTEND_URL })
 
 app.register(fastifyJwt, { secret: env.JWT_SECRET })
 
+app.decorate('authenticate', async (request: FastifyRequest, reply: FastifyReply) => {
+  try {
+    await request.jwtVerify()
+  } catch {
+    return reply.status(401).send({ message: 'Token missing or invalid' })
+  }
+})
+
 app.register(userRoutes, { prefix: '/users' })
+app.register(preferencesRoutes, { prefix: '/users/me' })
 app.register(authRoutes, { prefix: '/auth' })
 
 export default app

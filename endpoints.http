@@ -1,4 +1,5 @@
 @baseUrl = http://localhost:3333
+@token = {{login.response.body.token}}
 
 ### Test database
 
@@ -17,8 +18,72 @@ Content-Type: application/json
 
 ### Login user with email and password
 
-#@name login
+# @name login
 POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {"email": "washington@example.com", "password": "senha#123"}
+
+### Preferences: criar preferencias do onboarding (primeira vez)
+
+# @name savePreferences
+PUT {{baseUrl}}/users/me/preferences
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"languages": ["TypeScript", "Python"], "frameworks": ["React", "Next.js"], "focus": ["frontend", "fullstack"], "interfaceLanguage": "pt-BR"}
+
+### Preferences: atualizar preferencias (upsert - nao deve duplicar linha)
+
+PUT {{baseUrl}}/users/me/preferences
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"languages": ["Go", "Rust"], "frameworks": ["Node.js"], "focus": ["backend"], "interfaceLanguage": "en-US"}
+
+### Preferences: sem token -> 401
+
+PUT {{baseUrl}}/users/me/preferences
+Content-Type: application/json
+
+{"languages": ["TypeScript"], "frameworks": ["React"], "focus": ["frontend"], "interfaceLanguage": "pt-BR"}
+
+### Preferences: token invalido -> 401
+
+PUT {{baseUrl}}/users/me/preferences
+Content-Type: application/json
+Authorization: Bearer token-invalido
+
+{"languages": ["TypeScript"], "frameworks": ["React"], "focus": ["frontend"], "interfaceLanguage": "pt-BR"}
+
+### Preferences: focus fora do enum -> 400
+
+PUT {{baseUrl}}/users/me/preferences
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"languages": ["TypeScript"], "frameworks": ["React"], "focus": ["mobile"], "interfaceLanguage": "pt-BR"}
+
+### Preferences: interfaceLanguage invalido -> 400
+
+PUT {{baseUrl}}/users/me/preferences
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"languages": ["TypeScript"], "frameworks": ["React"], "focus": ["frontend"], "interfaceLanguage": "fr-FR"}
+
+### Preferences: arrays vazios -> 400
+
+PUT {{baseUrl}}/users/me/preferences
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"languages": [], "frameworks": [], "focus": [], "interfaceLanguage": "pt-BR"}
+
+### Preferences: campo obrigatorio ausente -> 400
+
+PUT {{baseUrl}}/users/me/preferences
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{"languages": ["TypeScript"], "frameworks": ["React"], "focus": ["frontend"]}
