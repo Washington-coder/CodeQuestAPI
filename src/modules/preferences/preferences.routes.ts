@@ -1,7 +1,7 @@
 import { type FastifyInstance } from 'fastify'
 import { createPreferencesService } from './preferences.service'
 import { db } from '../../db'
-import { type NewUserPreferences, userPreferences } from '../../db/schema'
+import { userPreferences } from '../../db/schema'
 import { savePreferencesSchema } from './preferences.schema'
 
 export function preferencesRoutes(app: FastifyInstance) {
