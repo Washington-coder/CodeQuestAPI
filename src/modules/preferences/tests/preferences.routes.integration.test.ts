@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest'
 import app from '../../../app'
 import { db } from '../../../db'
 import { users, userPreferences } from '../../../db/schema'
+import { ROUTES } from '../../../constants/routes'
 
 beforeAll(async () => {
   await app.ready()
@@ -35,7 +36,7 @@ const payload = {
 
 describe('PUT /users/me/preferences', () => {
   it('devolve 401 quando não há token', async () => {
-    const res = await app.inject({ method: 'PUT', url: '/users/me/preferences', payload })
+    const res = await app.inject({ method: 'PUT', url: ROUTES.USERS.PREFERENCES, payload })
 
     expect(res.statusCode).toBe(401)
   })
@@ -43,7 +44,7 @@ describe('PUT /users/me/preferences', () => {
   it('devolve 401 quando o token é inválido', async () => {
     const res = await app.inject({
       method: 'PUT',
-      url: '/users/me/preferences',
+      url: ROUTES.USERS.PREFERENCES,
       payload,
       headers: { authorization: 'Bearer token-invalido' },
     })
@@ -56,7 +57,7 @@ describe('PUT /users/me/preferences', () => {
 
     const res = await app.inject({
       method: 'PUT',
-      url: '/users/me/preferences',
+      url: ROUTES.USERS.PREFERENCES,
       payload: { ...payload, languages: [] },
       headers: { authorization: `Bearer ${token}` },
     })
@@ -69,7 +70,7 @@ describe('PUT /users/me/preferences', () => {
 
     const res = await app.inject({
       method: 'PUT',
-      url: '/users/me/preferences',
+      url: ROUTES.USERS.PREFERENCES,
       payload,
       headers: { authorization: `Bearer ${token}` },
     })
@@ -92,13 +93,13 @@ describe('PUT /users/me/preferences', () => {
 
     await app.inject({
       method: 'PUT',
-      url: '/users/me/preferences',
+      url: ROUTES.USERS.PREFERENCES,
       payload,
       headers: { authorization: `Bearer ${token}` },
     })
     await app.inject({
       method: 'PUT',
-      url: '/users/me/preferences',
+      url: ROUTES.USERS.PREFERENCES,
       payload: updated,
       headers: { authorization: `Bearer ${token}` },
     })

@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest'
 import app from '../../../app'
 import { db } from '../../../db'
 import { users } from '../../../db/schema'
+import { ROUTES } from '../../../constants/routes'
 import { type CreateUserBody } from '../user.schema'
 
 beforeAll(async () => {
@@ -20,7 +21,7 @@ const payload: CreateUserBody = { name: 'Ana', email: 'ana@teste.com', password:
 
 describe('POST /users', () => {
   it('creates the user and return 201 with hashed password', async () => {
-    const res = await app.inject({ method: 'POST', url: '/users', payload })
+    const res = await app.inject({ method: 'POST', url: ROUTES.USERS.CREATE, payload })
 
     expect(res.statusCode).toBe(201)
     expect(res.json()).toEqual({
@@ -32,7 +33,7 @@ describe('POST /users', () => {
   })
 
   it('grava a senha como hash bcrypt no banco, nunca em texto puro', async () => {
-    await app.inject({ method: 'POST', url: '/users', payload })
+    await app.inject({ method: 'POST', url: ROUTES.USERS.CREATE, payload })
 
     const [row] = await db.select().from(users)
     expect(row).toBeDefined()
@@ -41,8 +42,8 @@ describe('POST /users', () => {
   })
 
   it('devolve 409 para email duplicado', async () => {
-    await app.inject({ method: 'POST', url: '/users', payload })
-    const res = await app.inject({ method: 'POST', url: '/users', payload })
+    await app.inject({ method: 'POST', url: ROUTES.USERS.CREATE, payload })
+    const res = await app.inject({ method: 'POST', url: ROUTES.USERS.CREATE, payload })
 
     expect(res.statusCode).toBe(409)
     expect(res.json()).toEqual({ message: 'Email já cadastrado' })
@@ -51,7 +52,7 @@ describe('POST /users', () => {
   it('devolve 400 para senha fora da BR-01', async () => {
     const res = await app.inject({
       method: 'POST',
-      url: '/users',
+      url: ROUTES.USERS.CREATE,
       payload: { ...payload, password: 'senha1234' }, // sem caractere especial
     })
 
@@ -61,7 +62,7 @@ describe('POST /users', () => {
   it('devolve 400 para email inválido', async () => {
     const res = await app.inject({
       method: 'POST',
-      url: '/users',
+      url: ROUTES.USERS.CREATE,
       payload: { ...payload, email: 'nao-email' },
     })
 
@@ -71,7 +72,7 @@ describe('POST /users', () => {
   it('não cria usuário quando a validação falha', async () => {
     await app.inject({
       method: 'POST',
-      url: '/users',
+      url: ROUTES.USERS.CREATE,
       payload: { ...payload, password: 'fraca' },
     })
 

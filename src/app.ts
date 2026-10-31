@@ -8,6 +8,7 @@ import fastifyCors from '@fastify/cors'
 import { env } from './env/env'
 import { authRoutes } from './modules/auth/auth.routes'
 import { preferencesRoutes } from './modules/preferences/preferences.routes'
+import { ROUTES } from './constants/routes'
 
 const app = fastify({ logger: process.env.NODE_ENV !== 'test' })
 
@@ -21,7 +22,7 @@ app.setErrorHandler((error, _request, reply) => {
   reply.send(error)
 })
 
-app.get('/health', async () => {
+app.get(ROUTES.HEALTH, async () => {
   const [rows] = await db.execute(sql`SELECT NOW() AS agora`)
 
   return { status: 'ok', banco: rows.agora }
@@ -31,7 +32,7 @@ app.addHook('onClose', async () => {
   await db.$client.end()
 })
 
-app.get('/', async (_request, _reply) => {
+app.get(ROUTES.ROOT, async (_request, _reply) => {
   return {
     message: 'Template Fastify running...',
   }
@@ -49,8 +50,8 @@ app.decorate('authenticate', async (request: FastifyRequest, reply: FastifyReply
   }
 })
 
-app.register(userRoutes, { prefix: '/users' })
-app.register(preferencesRoutes, { prefix: '/users/me' })
-app.register(authRoutes, { prefix: '/auth' })
+app.register(userRoutes)
+app.register(preferencesRoutes)
+app.register(authRoutes)
 
 export default app

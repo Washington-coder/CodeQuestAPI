@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll, afterAll, beforeEach, vi } from 'vites
 import app from '../../../app'
 import { db } from '../../../db'
 import { users } from '../../../db/schema'
+import { ROUTES } from '../../../constants/routes'
 
 // Mocka o módulo de OAuth: não queremos falar com o Google real nos testes.
 vi.mock('../google-oauth', () => ({
@@ -38,7 +39,10 @@ describe('GET /auth/google/callback', () => {
       name: 'Ana',
     } as never)
 
-    const res = await app.inject({ method: 'GET', url: '/auth/google/callback?code=abc' })
+    const res = await app.inject({
+      method: 'GET',
+      url: `${ROUTES.AUTH.GOOGLE_CALLBACK}?code=abc`,
+    })
 
     expect(res.statusCode).toBe(302)
     const location = res.headers.location
@@ -61,7 +65,10 @@ describe('GET /auth/google/callback', () => {
       name: 'Ana',
     } as never)
 
-    const res = await app.inject({ method: 'GET', url: '/auth/google/callback?code=abc' })
+    const res = await app.inject({
+      method: 'GET',
+      url: `${ROUTES.AUTH.GOOGLE_CALLBACK}?code=abc`,
+    })
 
     expect(res.statusCode).toBe(302)
     const rows = await db.select().from(users)
@@ -72,7 +79,10 @@ describe('GET /auth/google/callback', () => {
     mockExchange.mockResolvedValueOnce({ access_token: 'a', id_token: 'id-token' } as never)
     mockVerify.mockResolvedValueOnce(undefined)
 
-    const res = await app.inject({ method: 'GET', url: '/auth/google/callback?code=abc' })
+    const res = await app.inject({
+      method: 'GET',
+      url: `${ROUTES.AUTH.GOOGLE_CALLBACK}?code=abc`,
+    })
 
     expect(res.statusCode).toBe(401)
     expect(res.json()).toEqual({ message: 'Invalid Google Token' })
@@ -82,7 +92,10 @@ describe('GET /auth/google/callback', () => {
     mockExchange.mockResolvedValueOnce({ access_token: 'a', id_token: 'id-token' } as never)
     mockVerify.mockResolvedValueOnce({ sub: 'google-1', name: 'Ana' } as never)
 
-    const res = await app.inject({ method: 'GET', url: '/auth/google/callback?code=abc' })
+    const res = await app.inject({
+      method: 'GET',
+      url: `${ROUTES.AUTH.GOOGLE_CALLBACK}?code=abc`,
+    })
 
     expect(res.statusCode).toBe(401)
   })

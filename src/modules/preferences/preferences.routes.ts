@@ -3,6 +3,7 @@ import { createPreferencesService } from './preferences.service'
 import { db } from '../../db'
 import { userPreferences } from '../../db/schema'
 import { savePreferencesSchema } from './preferences.schema'
+import { ROUTES } from '../../constants/routes'
 
 export function preferencesRoutes(app: FastifyInstance) {
   const save = createPreferencesService({
@@ -31,7 +32,7 @@ export function preferencesRoutes(app: FastifyInstance) {
     },
   })
 
-  app.put('/preferences', { onRequest: [app.authenticate] }, async (request, reply) => {
+  app.put(ROUTES.USERS.PREFERENCES, { onRequest: [app.authenticate] }, async (request, reply) => {
     const body = savePreferencesSchema.parse(request.body)
     const userId = request.user.sub
 
