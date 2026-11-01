@@ -1,10 +1,14 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest'
-import app from '../../../app'
+import { buildApp } from '../../../app'
+import { type FastifyInstance } from 'fastify'
 import { db } from '../../../db'
 import { users, userPreferences } from '../../../db/schema'
 import { ROUTES } from '../../../constants/routes'
 
+let app: FastifyInstance
+
 beforeAll(async () => {
+  app = await buildApp()
   await app.ready()
 })
 

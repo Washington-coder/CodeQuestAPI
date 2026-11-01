@@ -4,6 +4,7 @@ import { db } from '../../db'
 import { userPreferences } from '../../db/schema'
 import { savePreferencesSchema } from './preferences.schema'
 import { ROUTES } from '../../constants/routes'
+import { savePreferencesDocs } from '../../docs/preferences.docs'
 
 export function preferencesRoutes(app: FastifyInstance) {
   const save = createPreferencesService({
@@ -32,17 +33,24 @@ export function preferencesRoutes(app: FastifyInstance) {
     },
   })
 
-  app.put(ROUTES.USERS.PREFERENCES, { onRequest: [app.authenticate] }, async (request, reply) => {
-    const body = savePreferencesSchema.parse(request.body)
-    const userId = request.user.sub
+  app.put(
+    ROUTES.USERS.PREFERENCES,
+    {
+      onRequest: [app.authenticate],
+      schema: savePreferencesDocs,
+    },
+    async (request, reply) => {
+      const body = savePreferencesSchema.parse(request.body)
+      const userId = request.user.sub
 
-    const saved = await save(userId, body)
+      const saved = await save(userId, body)
 
-    return reply.status(200).send({
-      languages: saved.languages,
-      frameworks: saved.frameworks,
-      focus: saved.focus,
-      interfaceLanguage: saved.interfaceLanguage,
-    })
-  })
+      return reply.status(200).send({
+        languages: saved.languages,
+        frameworks: saved.frameworks,
+        focus: saved.focus,
+        interfaceLanguage: saved.interfaceLanguage,
+      })
+    },
+  )
 }

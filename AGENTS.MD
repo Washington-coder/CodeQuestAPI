@@ -27,9 +27,16 @@ npx vitest run src/config/env.test.ts  # roda apenas um arquivo de teste
 ```
 src/
   server.ts         # bootstrap: cria o app, registra módulos, escuta na porta (env.PORT)
+  app.ts            # buildApp(): cria o Fastify, registra plugins, rotas e o Swagger
   config/
     env.ts          # carrega e valida variáveis de ambiente (dotenv + zod)
     env.test.ts     # testes unitários da validação de env
+    swagger.ts      # configuração do OpenAPI + UI em /docs (desligado em produção)
+  constants/
+    routes.ts       # ROUTES: todas as URLs de endpoints (fonte única de verdade)
+  docs/            # documentação OpenAPI de cada rota, separada do código
+    schemas.ts      # schemas de erro compartilhados (ErrorResponse, ValidationError)
+    *.docs.ts       # schemas OpenAPI das rotas de cada módulo (health, users, auth, preferences)
   modules/          # um módulo por domínio/feature
     <modulo>/
       routes.ts     # declara as rotas + validação (JSON Schema do Fastify)
@@ -41,6 +48,16 @@ src/
 ```
 
 Regra do monólito modular: **cada pasta tem uma responsabilidade clara** e nenhum arquivo acumula dois papéis. Em módulos simples, camadas intermediárias podem ser omitidas — o requisito é responsabilidade definida, não ter todas as camadas. Um módulo não deve conhecer a implementação interna de outro; importe só o que ele expõe.
+
+## Documentação da API (Swagger)
+
+A documentação OpenAPI é gerada a partir dos `schema` das rotas (tags, summary, body, response) e fica disponível em **`/docs`** com a UI interativa do Swagger. Ela é registrada em `src/config/swagger.ts` e **só é ativada quando `NODE_ENV !== 'production'`**.
+
+- Toda rota nova deve declarar `schema: { tags, summary, body, response }` para aparecer documentada.
+- As URLs dos endpoints vêm sempre de `ROUTES` (`src/constants/routes.ts`) — nunca escreva o caminho como string literal.
+- A documentação OpenAPI de cada rota fica em `src/docs/<modulo>.docs.ts` (ou `src/docs/health.docs.ts` para as rotas raiz), **separada do código das rotas**. Importe o schema e passe em `{ schema: ... }` no registro da rota.
+- Schemas de erro compartilhados ficam em `src/docs/schemas.ts` e são referenciados com `{ $ref: 'ErrorResponse#' }` / `{ $ref: 'ValidationError#' }`.
+- O Swagger **precisa ser registrado antes das rotas** (dentro de `buildApp()`), senão as rotas não são capturadas.
 
 ## Diretrizes de arquitetura e código
 

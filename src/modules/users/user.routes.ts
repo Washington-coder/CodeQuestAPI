@@ -4,9 +4,10 @@ import { db } from '../../db'
 import { users } from '../../db/schema'
 import { createUserSchema } from './user.schema'
 import { ROUTES } from '../../constants/routes'
+import { createUserDocs } from '../../docs/users.docs'
 
 export function userRoutes(app: FastifyInstance) {
-  app.post(ROUTES.USERS.CREATE, async (request, reply) => {
+  app.post(ROUTES.USERS.CREATE, { schema: createUserDocs }, async (request, reply) => {
     const body = createUserSchema.parse(request.body)
 
     const passwordHash = await bcrypt.hash(body.password, 12)

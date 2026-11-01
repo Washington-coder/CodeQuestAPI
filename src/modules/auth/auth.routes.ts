@@ -10,6 +10,7 @@ import { type FastifyReply } from 'fastify/types/reply'
 import { type FastifyRequest } from 'fastify/types/request'
 import { exchangeCodeForToken, verifyGoogleToken } from './google-oauth'
 import { ROUTES } from '../../constants/routes'
+import { loginDocs, googleCallbackDocs } from '../../docs/auth.docs'
 
 export function authRoutes(app: FastifyInstance) {
   const authService = createAuthService({
@@ -21,7 +22,7 @@ export function authRoutes(app: FastifyInstance) {
     signToken: (userId) => app.jwt.sign({ sub: userId }, { expiresIn: env.JWT_EXPIRES_IN }),
   })
 
-  app.post(ROUTES.AUTH.LOGIN, async (request, reply) => {
+  app.post(ROUTES.AUTH.LOGIN, { schema: loginDocs }, async (request, reply) => {
     const body = loginSchema.parse(request.body)
 
     try {
@@ -37,6 +38,7 @@ export function authRoutes(app: FastifyInstance) {
 
   app.get<{ Querystring: { code: string } }>(
     ROUTES.AUTH.GOOGLE_CALLBACK,
+    { schema: googleCallbackDocs },
     async (request: FastifyRequest<{ Querystring: { code: string } }>, reply: FastifyReply) => {
       const { code } = request.query
 

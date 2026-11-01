@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll, beforeEach, vi } from 'vitest'
-import app from '../../../app'
+import { buildApp } from '../../../app'
+import { type FastifyInstance } from 'fastify'
 import { db } from '../../../db'
 import { users } from '../../../db/schema'
 import { ROUTES } from '../../../constants/routes'
@@ -16,7 +17,10 @@ import { exchangeCodeForToken, verifyGoogleToken } from '../google-oauth'
 const mockExchange = vi.mocked(exchangeCodeForToken)
 const mockVerify = vi.mocked(verifyGoogleToken)
 
+let app: FastifyInstance
+
 beforeAll(async () => {
+  app = await buildApp()
   await app.ready()
 })
 
