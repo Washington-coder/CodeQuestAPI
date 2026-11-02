@@ -14,7 +14,7 @@ CodeQuest is a web platform where programmers can acess to pratice their program
 
 <!-- ONBOARDING & PREFERENCES -->
 
-- [RF-04] The app must allow users to select their preferences (programming languages, frameworks, frontend/backend, and interface language) during onboarding.
+- [x] [RF-04] The app must allow users to select their preferences (programming languages, frameworks, frontend/backend, and interface language) during onboarding.
 
 <!-- QUESTION MODES (GENERAL) -->
 
